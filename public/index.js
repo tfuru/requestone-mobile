@@ -34,6 +34,7 @@ $(function() {
     bgmManager.resume();
     $('#sound_status').text('音声受信中');
   });
+  
   $('#btn_pause').on('click',function(e){
     e.preventDefault();
     playerManager.playQuere = [];
@@ -61,9 +62,7 @@ $(function() {
 
   // サーバからのイベント'voicetext'を受信する
   socket.on('voicetext', function(data) {
-    if(status == STATUS_STOP) {
-      return;
-    }
+	if(status == STATUS_STOP) return;
     console.log('event:voicetext');
 
     if(playerManager.status === playerManager.STATUS.EMERGENCY) {
@@ -78,18 +77,15 @@ $(function() {
       //data を wav から mp3 に変換して再生
       var fnc = function(data){
 	      console.log('audioVoiceText play');
-	      //デコードが済んだら実行
-	      var decodeSuccess = function(){
-	    	  //終了時の処理を設定して 再生開始
-		      var playEnded = function(){
-		    	  	//bgmフェードイン？
-		    	  	bgmManager.fadeIn();
-			        emotionManager.setEmotion('wait');
-			        playerManager.complete();
-			  };
-			  audioPlayer.playSound(playEnded);
-	      };
-	      audioPlayer.decodeMp3Audio( 'data:audio/mp3;base64,'+data,decodeSuccess);
+    	  //終了時の処理
+	      var playEnded = function(){
+	    	  	//bgmフェードイン？
+	    	  	bgmManager.fadeIn();
+		        emotionManager.setEmotion('wait');
+		        playerManager.complete();
+		  };
+		  //再生
+	      audioPlayer.playSound('data:audio/mp3;base64,'+data,playEnded);
       };
       wav2mp3.convert('voicetext1',data,fnc);
     });
@@ -97,34 +93,27 @@ $(function() {
 
   // 次のナンバーのコール。BGMをフェードアウトする
   socket.on('nextnumber', function(data) {
-    if(status == STATUS_STOP) {
-      return;
-    }
-
+    if(status == STATUS_STOP) return;
+    
     if(playerManager.status === playerManager.STATUS.EMERGENCY) {
       return;
     }
-
     console.log('event:nextnumber');
-
     playerManager.playQuere.push(function(){
       console.log('event runnning:voicetext 2');
       emotionManager.setEmotion('paku');
       
       var fnc = function(data){
 	      console.log('audioVoiceText2 play');
-	      //デコードが済んだら実行
-	      var decodeSuccess = function(){
-	    	  //終了時の処理を設定して 再生開始
-		      var playEnded = function(){
-			        emotionManager.setEmotion('wait');
-			        playerManager.complete();
-			  };
-			  audioPlayer.playSound(playEnded);
-	      };
-	      audioPlayer.decodeMp3Audio( 'data:audio/mp3;base64,'+data,decodeSuccess);
-    	};
-    	wav2mp3.convert('voicetext2',data,fnc);
+    	  //終了時の処理
+	      var playEnded = function(){
+	    	  emotionManager.setEmotion('wait');
+		      playerManager.complete();
+		  };
+		  //再生
+	      audioPlayer.playSound('data:audio/mp3;base64,'+data,playEnded);
+       };
+       wav2mp3.convert('voicetext2',data,fnc);
     });
   });
 
@@ -159,6 +148,7 @@ $(function() {
       var log = $('<p>'+("0" + date.getHours()).slice(-2)+':'+("0" + date.getMinutes()).slice(-2)+'</p>');
       $('#section_log_box').append(log);
       $('#section_log_box').scrollTop(999999999);
+      //バグ原因？ 音声再生していないのに complete させるから音声再生が途中で停止するっぽい
       playerManager.complete();
     })
   });
@@ -171,6 +161,7 @@ $(function() {
       $('#section_log_box').append(log);
       $('#section_log_box').scrollTop(999999999);
       console.log('ログ出力：',data);
+      //バグ原因？ 音声再生していないのに complete させるから音声再生が途中で停止するっぽい
       playerManager.complete();
     });
   });
@@ -187,21 +178,16 @@ $(function() {
 
   // サーバからのイベント'edisonaction'を受信する
   socket.on('edisonaction', function(data) {
-    if(status == STATUS_STOP) {
-      return;
-    }
+    if(status == STATUS_STOP) return;
+    
     emotionManager.setEmotion('paku');
     var fnc = function(data){
 	      console.log('audioEdisonaction play');
-	      //デコードが済んだら実行
-	      var decodeSuccess = function(){
-	    	  //終了時の処理を設定して 再生開始
-		      var playEnded = function(){
-		    	  	emotionManager.setEmotion('heart');
-			  };
-			  audioPlayer.playSound(playEnded);
-	      };
-	      audioPlayer.decodeMp3Audio( 'data:audio/mp3;base64,'+data,decodeSuccess);
+	      //終了時の処理を設定して 再生開始
+	      var playEnded = function(){
+	    	  	emotionManager.setEmotion('heart');
+		  };
+	      audioPlayer.playSound('data:audio/mp3;base64,'+data,playEnded);
   	};
   	wav2mp3.convert('edisonaction',data,fnc);
   });
@@ -217,6 +203,7 @@ $(function() {
 
   
   // サーバからのイベント'topix_sensation'を受信する
+  // 緊急放送？ BGM状態にかかわらず実行したいっぽい
   socket.on('emergency', function(data) {
     console.log('emergency');
     playerManager.playQuere.push(function(){
@@ -225,15 +212,11 @@ $(function() {
       
       var fnc = function(data){
 	      console.log('audioEmergency play');
-	      //デコードが済んだら実行
-	      var decodeSuccess = function(){
-	    	  //終了時の処理を設定して 再生開始
-		      var playEnded = function(){
-		    	  	playerManager.complete();
-			  };
-			  audioPlayer.playSound(playEnded);
-	      };
-	      audioPlayer.decodeMp3Audio( 'data:audio/mp3;base64,'+data,decodeSuccess);
+	      //終了時の処理を設定して 再生開始
+	      var playEnded = function(){
+	    	  	playerManager.complete();
+		  };
+	      audioPlayer.playSound('data:audio/mp3;base64,'+data,playEnded);
   	  };
   	  wav2mp3.convert('emergency',data,fnc);
     });
@@ -241,26 +224,24 @@ $(function() {
 
   // サーバからのイベント'twitter'を受信する
   socket.on('tweet', function(data) {
-    console.log('tweet');
-    playerManager.playQuere.push(function(){
-        var fnc = function(data){
+	  //再生状態を確認する？
+	  if(status == STATUS_STOP) return;
+	  
+	  console.log('tweet');
+	  playerManager.playQuere.push(function(){
+		  var fnc = function(data){
   	      console.log('audioTweet play');
-  	      //デコードが済んだら実行
-  	      var decodeSuccess = function(){
-  	    	  //終了時の処理を設定して 再生開始
-  		      var playEnded = function(){
-  		    	  	
-  			  };
-  			  audioPlayer.playSound(playEnded);
-  	      };
-  	      audioPlayer.decodeMp3Audio( 'data:audio/mp3;base64,'+data,decodeSuccess);
-  	  };
+  	      //終了時の処理を設定して 再生開始
+		  var playEnded = function(){
+		    	  	
+		  };
+  	      audioPlayer.playSound('data:audio/mp3;base64,'+data,playEnded);
+	  };
   	  wav2mp3.convert('tweet',data,fnc);
     });
   });
 
   // youtubeIdを取得する
-  var done = false;
   socket.on('youtube',function(_videoId) {
 	    if(status == STATUS_STOP) return;
 	    
@@ -269,20 +250,15 @@ $(function() {
 			console.log('_videoId:'+_videoId);
 			var fnc = function( data ){
 		      console.log('audioYoutube play');
-		      //デコードが済んだら実行
-		      var decodeSuccess = function(){
-		    	  //終了時の処理を設定して 再生開始
-			      var playEnded = function(){
-			    	  console.log('youtube ended');
-			          emotionManager.setEmotion('wait');
-			          done = true;
-			          //playerManager を complete ステータスに変更
-			          playerManager.complete();
-			          bgmManager.fadeIn();
-				  };
-				  audioPlayer.playSound(playEnded);
-		      };
-		      audioPlayer.decodeMp3Audio( 'data:audio/mp3;base64,'+data,decodeSuccess);
+		      //終了時の処理を設定して 再生開始
+		      var playEnded = function(){
+		    	  console.log('youtube ended');
+		          emotionManager.setEmotion('wait');
+		          //playerManager を complete ステータスに変更
+		          playerManager.complete();
+		          bgmManager.fadeIn();
+			  };
+		      audioPlayer.playSound('data:audio/mp3;base64,'+data,playEnded);
 			};		
 			youtube2Mp3.convert('youtube',_videoId,fnc);
 	    });
@@ -334,7 +310,9 @@ $(function() {
     var MAX_VOLUME = 0.2;
     var volume = MAX_VOLUME;
     var tid;
-    var videoBGM = $("<video>");
+    
+    //TODO m4aをmp3に変換して再生できるようにする必要がある
+    var melocyPlayer = new Mp3DataUriAudio();
     
     // URLを取得して再生
     this.get = function () {
@@ -350,11 +328,11 @@ $(function() {
     }
     // 指定URLのmp4を再生
     this.play = function(url) {
-      $('#melocy').remove();
       console.log('bgm append volume:'+volume);
       //$melocy = $('<video id="melocy" style="display:none;" autoplay controls src="'+url+'">');      
       //$melocy[0].volume = volume;      
       //$('body').append($melocy);
+      /*
       console.log('videoBGM');
       videoBGM.src = url;
       videoBGM.volume = volume;
@@ -364,6 +342,7 @@ $(function() {
         //$(this).remove();
         self.get();
       });
+      */
     }
 
     // フェードアウト
@@ -419,9 +398,8 @@ $(function() {
     }
   }
 
-  var bgmManager = new BGMManager();
+  bgmManager = new BGMManager();
   bgmManager.get();
-
 
   function EmotionManager() {
     var self = this;

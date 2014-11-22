@@ -52,39 +52,37 @@
     io.sockets.on('connection', function(socket) {
     	console.log("connection");
     	
-    	// メッセージを受けたときの処理
-    	socket.on('message', function(json) {
-    		var cmd = json['cmd'];
-    		console.log("message cmd:"+cmd);
-    		if(cmd == 'wav2mp3'){
-        		var tag = json['tag'];
-        		var wav = json['wav'];
-	    		//ここで wavバイナリを mp3 に変換する
-	    		wav2mp3Util.save(tag+'.wav',new Buffer(wav,'base64'),function(err){
-	    			console.log('save '+err);
-	    			//MP3に変換したバイナリを受け取る
-	    			wav2mp3Util.convert(function( data ){
-	    				var mp3 = new Buffer(data).toString('base64');
-	    				// つながっているクライアント全員に送信
-	    				//io.sockets.emit('message', { mp3:mp3 });
-	    				//接続してきたクライアントだけに変身する
-	    				socket.emit('didWav2mp3', { mp3:mp3 });
-	    			});
-	    		});
-    		}
-    		else if(cmd == 'youtube2mp3'){
-    			//youtube をダウンロードして mp3 を作る
-        		var tag = json['tag'];
-        		var videoId = json['videoId'];
-        		
-        		youtube2mp3Util.download(videoId,function(err){
-        			youtube2mp3Util.convert(function( data ){
-	    				var mp3 = new Buffer(data).toString('base64');
-	    				//接続してきたクライアントだけに変身する
-	    				socket.emit('didYouTube2Mp3', { mp3:mp3 });
-	    			});
-        		});
-    		}
+    	//wavをmp3に変換する処理
+    	socket.on('wav2mp3', function(json) {
+    		var tag = json['tag'];
+    		var wav = json['wav'];
+    		//ここで wavバイナリを mp3 に変換する
+    		wav2mp3Util.save(tag+'.wav',new Buffer(wav,'base64'),function(err){
+    			console.log('save '+err);
+    			//MP3に変換したバイナリを受け取る
+    			wav2mp3Util.convert(function( data ){
+    				var mp3 = new Buffer(data).toString('base64');
+    				// つながっているクライアント全員に送信
+    				//io.sockets.emit('message', { mp3:mp3 });
+    				//接続してきたクライアントだけに変身する
+    				socket.emit('didWav2mp3', { mp3:mp3 });
+    			});
+    		});
+    	});
+    	
+    	//youtubeをmp3に変換する処理
+    	socket.on('youtube2mp3', function(json) {
+			//youtube をダウンロードして mp3 を作る
+    		var tag = json['tag'];
+    		var videoId = json['videoId'];
+    		
+    		youtube2mp3Util.download(videoId,function(err){
+    			youtube2mp3Util.convert(function( data ){
+    				var mp3 = new Buffer(data).toString('base64');
+    				//接続してきたクライアントだけに変身する
+    				socket.emit('didYouTube2Mp3', { mp3:mp3 });
+    			});
+    		});
     	});
 
     	// クライアントが切断したときの処理

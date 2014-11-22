@@ -4,10 +4,7 @@ var P = function(){
 	this.audio = null;
 	this.init = function(){
 		this.audio = new Mp3DataUriAudio();
-		this.audio.decodeMp3Audio( this.url,function(){
-			console.log("success decodeMp3Audio");
-		});
-
+		
 		$("#btnStart").click($.proxy(this.clickBtnStart,this));
 		$("#btnStop").click($.proxy(this.clickBtnStop,this));
 	};
@@ -19,7 +16,7 @@ var P = function(){
 		
 		var fnc = function(){
 			console.log("timeout fnc");
-			this.audio.playSound( this.onEnded );			
+			this.audio.playSound( this.url,this.onEnded );			
 		};
 		setTimeout($.proxy(fnc,this), 1000);
 	};

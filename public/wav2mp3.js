@@ -22,7 +22,7 @@ var Wav2Mp3 = function(){
 		this.fnc_callback = callback;
 		
 		//変換サーバに wavバイナリを送信
-		this.socket.emit('message', {cmd:'wav2mp3',tag:tag,wav:src});
+		this.socket.emit('wav2mp3', {tag:tag,wav:src});
 	};
 	
 	//変換サーバからメッセージ受け取り

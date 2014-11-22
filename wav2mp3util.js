@@ -5,6 +5,8 @@ var temporary = __dirname+"/temp";
 
 var Wav2mp3Util = function(){
 	this.file_name = null;
+	//ffmpeg ビットレート
+	this.bitrate = '32k';
 	
 	//Wavファイルを保存する
 	this.save = function(file_name,data,callback){
@@ -19,7 +21,7 @@ var Wav2mp3Util = function(){
 		console.log( "convert()" );
 		var src = temporary+"/"+this.file_name;
 		var dst = temporary+"/"+this.file_name.replace('.wav','.mp3');
-		var cmd = 'ffmpeg -y -i '+src+' -ab 64k '+dst;
+		var cmd = 'ffmpeg -y -i '+src+' -ab '+this.bitrate+' '+dst;
 		console.log( cmd );
 		var child = exec(cmd, function(err, stdout, stderr){
 			//console.log( err );

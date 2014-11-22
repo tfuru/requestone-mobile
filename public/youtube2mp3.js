@@ -15,7 +15,7 @@ var YouTube2Mp3 = function(){
 		if(videoId == null) return;
 		this.fnc_callback = callback;		
 		//変換サーバに wavバイナリを送信
-		this.socket.emit('message',{cmd:'youtube2mp3',tag:tag,videoId:videoId});
+		this.socket.emit('youtube2mp3',{tag:tag,videoId:videoId});
 	};
 	
 	//変換サーバからメッセージ受け取り

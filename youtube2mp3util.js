@@ -8,6 +8,9 @@ var YouTube2Mp3Util = function(){
 	this.youtubeId = null;
 	this.file_name = null;
 	
+	//ffmpeg ビットレート
+	this.bitrate = '32k';
+	
 	//ダウンロードしてファイルを保存する
 	this.download = function(youtubeId,callback){
 		this.youtubeId = youtubeId;
@@ -25,7 +28,7 @@ var YouTube2Mp3Util = function(){
 		console.log( "convert()" );
 		var src = temporary+'/'+this.youtubeId+'.mp4';
 		var dst = src.replace('.mp4','.mp3');
-		var cmd = 'ffmpeg -y -i '+src+' -ab 128k '+dst;
+		var cmd = 'ffmpeg -y -i '+src+' -ab '+this.bitrate+' '+dst;
 		console.log( cmd );
 		var child = exec(cmd, function(err, stdout, stderr){
 			if (!err) {

@@ -15,6 +15,10 @@ var Mp3DataUriAudio = function(){
 	
 	//mp3をPCM音声データに変換
 	this.decodeMp3Audio = function(url,success){
+		if(typeof url == 'undefined'){
+			return;
+		}
+		
 		//BASE64部分だけ ArrayBuffer に変換
 		var dataBase64 = url.replace('data:audio/mp3;base64,','');
 		var byteArray = Base64Binary.decodeArrayBuffer( dataBase64 );
@@ -25,7 +29,18 @@ var Mp3DataUriAudio = function(){
 	};
 	
 	//再生
-	this.playSound = function(onended){		
+	this.playSound = function(url, onended){
+		if(typeof url == 'undefined'){
+			this._play(onended);
+			return;
+		}
+		
+		//mp3をPCMに変換
+		var fnc = $.proxy(function(){ this._play(onended);},this);
+		this.decodeMp3Audio(url, fnc);
+	}
+	
+	this._play = function(onended){
 		//BufferSourceを設定
 		if(this.bufferSource == null){
 			this.bufferSource = this.audioContext.createBufferSource();  
