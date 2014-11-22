@@ -21,8 +21,10 @@ var Wav2Mp3 = function(){
 		this.src_base64_data = src;
 		this.fnc_callback = callback;
 		
+		var t = (new Date()).getTime();
+		
 		//変換サーバに wavバイナリを送信
-		this.socket.emit('wav2mp3', {tag:tag,wav:src});
+		this.socket.emit('wav2mp3', {tag:tag+'_'+t,wav:src});
 	};
 	
 	//変換サーバからメッセージ受け取り

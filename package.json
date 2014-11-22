@@ -9,11 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.9.7",
+    "express": "^4.10.2",
     "fs": "0.0.2",
     "http": "0.0.0",
     "mime": "^1.2.11",
     "path": "^0.4.9",
-    "url": "^0.10.1"
+    "socket.io": "^1.2.1",
+    "socket.io-client": "^1.2.1",
+    "url": "^0.10.1",
+    "youtube-dl": "^1.5.16"
   }
 }

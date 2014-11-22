@@ -62,7 +62,7 @@ var Mp3DataUriAudio = function(){
 		}
 		
 		//再生開始
-		this.bufferSource.start(0); 
+		this.bufferSource.start(0);
 	};
 	
 	//再生停止
@@ -74,8 +74,11 @@ var Mp3DataUriAudio = function(){
 	
 	//再生終了時に呼び出される
 	this.onEnded = function(){
+		console.log("onEnded");
+		
 		//再生終了したのでbufferSourceは削除
 		this.bufferSource = null;		
+		this.pcmAudioData = null;
 		
 		if((typeof this.callbackOnEnded != "undefined") && (this.callbackOnEnded != null)){
 			//再生開始時に設定されていたコールバックに通知

@@ -9,12 +9,16 @@ var requestone_server = "http://ampersand.xyz/requestone/";
 $(function() {
   var wav2mp3 = new Wav2Mp3();
   var audioPlayer = new Mp3DataUriAudio();
+  var youtubePlayer = new Mp3DataUriAudio();
   var youtube2Mp3 = new YouTube2Mp3();
 
   //起動直後に 自動再生の為にボタンを押させる
   jAlert('ようこそ リクエストーン モバイル へ', 'requestone mobile',function(){
 	  audioPlayer.playSound();
 	  audioPlayer.stopSound();
+	  
+	  youtubePlayer.playSound();
+	  youtubePlayer.stopSound();
   });
   
   var STATUS_PLAY = 'play';
@@ -148,22 +152,20 @@ $(function() {
       var log = $('<p>'+("0" + date.getHours()).slice(-2)+':'+("0" + date.getMinutes()).slice(-2)+'</p>');
       $('#section_log_box').append(log);
       $('#section_log_box').scrollTop(999999999);
-      //バグ原因？ 音声再生していないのに complete させるから音声再生が途中で停止するっぽい
       playerManager.complete();
     })
   });
   
   // サーバからのイベント'radio_log'を受信する
   socket.on('radio_log', function(data) {
-    playerManager.playQuere.push(function(){
-      console.log('event:radio_log');
-      var log = $('<p>'+data+'</p>');
-      $('#section_log_box').append(log);
-      $('#section_log_box').scrollTop(999999999);
-      console.log('ログ出力：',data);
-      //バグ原因？ 音声再生していないのに complete させるから音声再生が途中で停止するっぽい
-      playerManager.complete();
-    });
+	  playerManager.playQuere.push(function(){
+		  console.log('event:radio_log');
+		  var log = $('<p>'+data+'</p>');
+		  $('#section_log_box').append(log);
+		  $('#section_log_box').scrollTop(999999999);
+		  console.log('ログ出力：',data);
+		  playerManager.complete();
+	  });
   });
 
   // サーバからのイベント'twitter_log'を受信する
@@ -258,7 +260,7 @@ $(function() {
 		          playerManager.complete();
 		          bgmManager.fadeIn();
 			  };
-		      audioPlayer.playSound('data:audio/mp3;base64,'+data,playEnded);
+			  youtubePlayer.playSound('data:audio/mp3;base64,'+data,playEnded);
 			};		
 			youtube2Mp3.convert('youtube',_videoId,fnc);
 	    });
@@ -291,10 +293,12 @@ $(function() {
     (function process(){
       console.log('process...',status);
       if(status != self.STATUS.WAIT && self.playQuere.length > 0) {
-        console.log('event pop');
-        self.startProcess();
-        var fn = self.playQuere.shift();
-        fn();
+    	  if(status == self.STATUS.READY){
+    		console.log('event pop');
+        	self.startProcess();
+        	var fn = self.playQuere.shift();
+        	fn();
+    	  }
       }
       setTimeout(process,500);
     })();
