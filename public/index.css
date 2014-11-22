@@ -1,0 +1,28 @@
+.wrapper{
+	position:initial;
+	width:300px;
+	min-width: 300px;
+	padding:0px 10px;
+}
+
+#djedi{
+	width:200px;
+	right: 30px;
+}
+
+#balloon-2-bottom{
+	right: 30px;
+	min-width: 300px;
+	width: auto;
+}
+
+iframe,video {
+	display: block;
+}
+
+.btn{
+	display:block;
+	width:80px;
+	height:30px;
+	font-size: 20p;
+}
