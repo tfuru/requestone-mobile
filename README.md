@@ -13,6 +13,7 @@ http://ampersand.xyz/requestone/
 
 サーバ内必要ソフト
 ffmpeg
+
 - wav,mp4 を mp3 に変換するのに利用
 
 動作確認端末

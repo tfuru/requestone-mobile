@@ -235,7 +235,7 @@ $(function() {
   	      console.log('audioTweet play');
   	      //終了時の処理を設定して 再生開始
 		  var playEnded = function(){
-		    	  	
+			  playerManager.complete();
 		  };
   	      audioPlayer.playSound('data:audio/mp3;base64,'+data,playEnded);
 	  };
