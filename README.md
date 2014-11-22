@@ -1,5 +1,7 @@
 MA10 リクエストーン を "勝手に" スマートフォン向けに移植
+
 http://mashupaward.jp/works/481
+
 http://ampersand.xyz/requestone/
 
 変更点
@@ -14,7 +16,9 @@ http://ampersand.xyz/requestone/
 
 ----
 MA10 requestone | リクエストーン - 無人IoTラジオ放送局
+
 http://ampersand.xyz/requestone/
+
 http://mashupaward.jp/works/481
 
 
