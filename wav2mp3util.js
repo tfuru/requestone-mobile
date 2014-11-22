@@ -6,7 +6,7 @@ var temporary = __dirname+"/temp";
 var Wav2mp3Util = function(){
 	this.file_name = null;
 	//ffmpeg ビットレート
-	this.bitrate = '32k';
+	this.bitrate = '64k';
 	
 	//Wavファイルを保存する
 	this.save = function(file_name,data,callback){

@@ -9,7 +9,7 @@ var YouTube2Mp3Util = function(){
 	this.file_name = null;
 	
 	//ffmpeg ビットレート
-	this.bitrate = '32k';
+	this.bitrate = '64k';
 	
 	//ダウンロードしてファイルを保存する
 	this.download = function(youtubeId,callback){
