@@ -1,4 +1,8 @@
-MA10 最優秀賞 リクエストーン を 勝手にスマートフォン向けに移植
+MA10 最優秀賞 リクエストーン を "勝手に" スマートフォン向けに移植
+
+http://mashupaward.jp/works/481
+
+http://ampersand.xyz/requestone/
 
 変更点
 - Audioタグを webkitAudio に変更
@@ -11,6 +15,9 @@ MA10 最優秀賞 リクエストーン を 勝手にスマートフォン向け
 
 ----
 MA10 requestone | リクエストーン - 無人IoTラジオ放送局
+
 http://ampersand.xyz/requestone/
+
+http://mashupaward.jp/works/481
 
 

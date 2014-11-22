@@ -4,7 +4,13 @@
 	<title>requestone mobile</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	
 	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	
+	<script src="jquery-ui-1.11.2.custom/jquery-ui.js" type="text/javascript"></script>
+	<script src="jquery.alerts.js" type="text/javascript"></script>
+	<link href="jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+	
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script src="base64-binary.js"></script>
 	<script src="config.js"></script>
@@ -18,7 +24,7 @@
 </head>
 <body>
     <div class="wrapper">
-      <img src="http://ampersand.xyz/requestone/images/edi1.svg" alt="" id="djedi">
+      <img src="http://ampersand.xyz/requestone/images/edi1.svg" id="djedi">
       <img src="http://ampersand.xyz/requestone/images/edi1.svg" style="display:none;">
       <img src="http://ampersand.xyz/requestone/images/edi2.svg" style="display:none;">
       <img src="http://ampersand.xyz/requestone/images/edi3.svg" style="display:none;">
@@ -34,7 +40,7 @@
         	<div id="section_log_box"></div>
     	</div>
     </div>
-    <div class="wrapper">
+    <div class="wrapper display_none">
     	<div id="buttonContainer">
     		<input type="button" id="btnPlay" class="btn" value="再生開始">
     	</div>

@@ -1,19 +1,31 @@
+html,body{
+	min-width: 100%!important;
+}
+
 .wrapper{
 	position:initial;
-	width:300px;
-	min-width: 300px;
-	padding:0px 10px;
+	width:300px!important;
+	min-width: 300px!important;
+}
+
+.sec_heding img{
+	width: 100px;
 }
 
 #djedi{
 	width:200px;
+	height:273px;
 	right: 30px;
 }
 
 #balloon-2-bottom{
-	right: 30px;
-	min-width: 300px;
-	width: auto;
+	display:block;
+	width: 270px!important;
+	min-width: 270px!important;
+}
+
+#section_log_box{
+	font-size:60%;
 }
 
 iframe,video {
@@ -25,4 +37,13 @@ iframe,video {
 	width:80px;
 	height:30px;
 	font-size: 20p;
+}
+
+#popup_ok{
+	display block;
+    font-size:25px;
+}
+
+.display_none{
+	display: none;
 }
